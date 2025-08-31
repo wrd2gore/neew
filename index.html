@@ -21,7 +21,35 @@
       background-size: cover;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      cursor: url('hellokitty.png'), auto;
+      cursor: url('cursor.png') 16 16, auto;
+    }
+
+    /* Animated cursor effect */
+    body:hover {
+      animation: cursorBounce 1.5s infinite ease-in-out;
+    }
+
+    @keyframes cursorBounce {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.2) rotate(10deg);
+      }
+    }
+
+    /* Pointer (trailing image) */
+    .pointer {
+      position: fixed;
+      width: 16px;
+      height: 16px;
+      background: url('pointer.png') no-repeat center center;
+      background-size: contain;
+      pointer-events: none;
+      opacity: 0.7;
+      box-shadow: 0 0 10px var(--primary-color);
+      transition: transform 0.1s ease-out, opacity 0.3s ease-out;
+      z-index: 1000;
     }
 
     .container {
@@ -49,7 +77,7 @@
     .mary span {
       display: inline-block;
       transition: transform 0.3s, color 0.3s;
-      cursor: url('hellokitty.png'), pointer;
+      cursor: url('cursor.png') 16 16, pointer;
     }
 
     .mary span:hover {
@@ -279,6 +307,22 @@
       color: #777;
     }
 
+    .view-counter {
+      font-size: 16px;
+      color: #555;
+      margin-top: 10px;
+      text-shadow: 0 0 5px var(--secondary-color);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .view-counter img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+    }
+
     .progress-bar {
       background: #f5f5f5;
       height: 8px;
@@ -334,7 +378,7 @@
     <div class="mary"><span>m</span><span>a</span><span>r</span><span>y</span></div>
     <div class="mary mirror"></div>
   </div>
-  <div class="card-container">
+  <div class=" card-container">
     <div class="card">
       <div class="header">
         <div class="profile-pic"><img src="pfp.png" alt="Profile Picture"></div>
@@ -346,17 +390,28 @@
         <div class="icon"><a href="https://discord.com/users/catgirlplush"><img src="discord.png" alt="Discord Icon" /></a><div class="tooltip">@catgirlplush</div></div>
         <div class="icon"><a href="https://www.roblox.com/users/738048392/profile?friendshipSourceType=PlayerSearch"><img src="roblox.png" alt="Roblox Icon" /></a><div class="tooltip">mae</div></div>
         <div class="icon"><a href="https://open.spotify.com/user/bok0cvekss3x3ya1goxv12frt?si=a9ae8660c0ab4472&nd=1&dlsi=3a145ada9c194915"><img src="spotify.png" alt="Spotify Icon" /></a><div class="tooltip">Mary&lt;3</div></div>
+        <div class="icon"><a href="https://www.instagram.com/deadinthedarkroom"><img src="instagram.png" alt="Instagram Icon" /></a><div class="tooltip">@deadinthedarkroom</div></div>
       </div>
       <div class="player">
         <div class="song-title"><a href="https://open.spotify.com/user/bok0cvekss3x3ya1goxv12frt?si=a9ae8660c0ab4472&nd=1&dlsi=3a145ada9c194915" target="_blank">So This Is Love - Cinderella</a><span class="time-display">0:00 / 0:00</span></div>
         <div class="progress-bar"><div class="progress"></div></div>
         <div class="volume-controls"><span>>///<</span><input type="range" class="volume-slider" min="0" max="100" value="50"></div>
+        <div class="view-counter"><img src="eye.png" alt="Eye Icon"><span id="viewCount">0</span></div>
       </div>
     </div>
   </div>
+  <div class="pointer"></div>
   <audio id="musicPlayer" src="song.mp3"></audio>
 
   <script>
+    // Initialize view counter
+    const viewCountElement = document.getElementById('viewCount');
+    let viewCount = parseInt(localStorage.getItem('viewCount') || '0', 10);
+    viewCountElement.textContent = viewCount;
+
+    // Simulate unique visitor tracking with sessionStorage
+    const hasViewed = sessionStorage.getItem('hasViewed');
+
     // Split text into spans and set mirror text
     const text = "mary";
     const mary = document.querySelector('.mary');
@@ -404,7 +459,18 @@
       }, 1000);
     }
 
-    // Throttled mousemove handler
+    // Pointer (trailing image) movement
+    const pointer = document.querySelector('.pointer');
+    document.addEventListener('mousemove', (e) => {
+      pointer.style.transform = `translate(${e.clientX - 8}px, ${e.clientY - 8}px)`;
+      pointer.style.opacity = '0.7';
+    });
+
+    document.addEventListener('mouseout', () => {
+      pointer.style.opacity = '0';
+    });
+
+    // Throttled mousemove handler for particles and container rotation
     let ticking = false;
     document.addEventListener('mousemove', (e) => {
       if (!ticking) {
@@ -464,6 +530,13 @@
       span.addEventListener('click', () => {
         cardContainer.classList.toggle('active');
         if (cardContainer.classList.contains('active')) {
+          // Increment view count only if this is a new visitor
+          if (!hasViewed) {
+            viewCount++;
+            localStorage.setItem('viewCount', viewCount);
+            viewCountElement.textContent = viewCount;
+            sessionStorage.setItem('hasViewed', 'true');
+          }
           fadeAudioIn();
         } else {
           musicPlayer.pause();
