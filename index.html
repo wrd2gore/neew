@@ -21,35 +21,27 @@
       background-size: cover;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      cursor: url('cursor.png') 16 16, auto;
+      cursor: url('cursor.png') 8 8, auto;
     }
 
-    /* Animated cursor effect */
-    body:hover {
-      animation: cursorBounce 1.5s infinite ease-in-out;
-    }
-
-    @keyframes cursorBounce {
-      0%, 100% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.2) rotate(10deg);
-      }
+    /* Custom cursor styling */
+    * {
+      cursor: crosshair !important;
     }
 
     /* Pointer (trailing image) */
     .pointer {
       position: fixed;
-      width: 16px;
-      height: 16px;
-      background: url('pointer.png') no-repeat center center;
-      background-size: contain;
+      width: 12px;
+      height: 12px;
+      background: var(--primary-color);
+      border-radius: 50%;
       pointer-events: none;
-      opacity: 0.7;
-      box-shadow: 0 0 10px var(--primary-color);
+      opacity: 0.8;
+      box-shadow: 0 0 15px var(--primary-color), 0 0 25px var(--secondary-color);
       transition: transform 0.1s ease-out, opacity 0.3s ease-out;
       z-index: 1000;
+      border: 2px solid white;
     }
 
     .container {
@@ -77,7 +69,7 @@
     .mary span {
       display: inline-block;
       transition: transform 0.3s, color 0.3s;
-      cursor: url('cursor.png') 16 16, pointer;
+      cursor: crosshair;
     }
 
     .mary span:hover {
@@ -144,6 +136,9 @@
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.3s ease;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 
     .card-container.active {
@@ -153,7 +148,7 @@
 
     .card {
       width: 500px;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(245, 245, 245, 0.9));
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(245, 245, 245, 0.95));
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border: 1px solid var(--accent-color);
@@ -162,7 +157,8 @@
       color: #333;
       transform-style: preserve-3d;
       transition: transform 0.2s ease;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      transform-origin: center center;
     }
 
     .header {
@@ -179,7 +175,7 @@
       overflow: hidden;
       background: #f5f5f5;
       border: 3px solid var(--accent-color);
-      box-shadow: 0 0 10px var(--accent-color);
+      box-shadow: 0 0 15px var(--accent-color);
     }
 
     .profile-pic img {
@@ -202,18 +198,18 @@
     }
 
     .tag {
-      background: #f5f5f5;
+      background: linear-gradient(45deg, var(--accent-color), rgba(255, 255, 255, 0.8));
       padding: 8px 15px;
       border-radius: 20px;
       font-size: 15px;
       color: #333;
       border: 1px solid var(--accent-color);
-      box-shadow: 0 0 8px var(--accent-color);
+      box-shadow: 0 4px 15px rgba(255, 140, 148, 0.3);
       transition: transform 0.2s ease;
     }
 
     .tag:hover {
-      transform: scale(1.1);
+      transform: scale(1.1) translateY(-2px);
     }
 
     .location {
@@ -248,26 +244,25 @@
     }
 
     .icon:hover {
-      transform: scale(1.3);
+      transform: scale(1.3) translateY(-5px);
     }
 
     .tooltip {
       position: absolute;
-      bottom: 50px;
+      bottom: 55px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(245, 245, 245, 0.9);
-      color: #333;
+      background: rgba(0, 0, 0, 0.9);
+      color: white;
       font-size: 13px;
       padding: 8px 12px;
       border-radius: 8px;
-      border: 1px solid var(--accent-color);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.3s ease, transform 0.3s ease;
       white-space: nowrap;
       z-index: 10;
-      box-shadow: 0 0 8px var(--accent-color);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
 
     .icon:hover .tooltip {
@@ -276,12 +271,12 @@
     }
 
     .player {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(245, 245, 245, 0.8));
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(245, 245, 245, 0.9));
       padding: 20px;
       border-radius: 15px;
       margin-bottom: 20px;
       border: 1px solid var(--accent-color);
-      box-shadow: 0 0 10px var(--secondary-color);
+      box-shadow: 0 8px 25px rgba(255, 140, 148, 0.2);
     }
 
     .song-title {
@@ -296,10 +291,11 @@
     .song-title a {
       color: #555;
       text-decoration: none;
+      transition: color 0.3s ease;
     }
 
     .song-title a:hover {
-      color: var(--accent-color);
+      color: var(--primary-color);
     }
 
     .time-display {
@@ -317,10 +313,16 @@
       gap: 5px;
     }
 
-    .view-counter img {
+    .eye-icon {
       width: 20px;
       height: 20px;
-      object-fit: contain;
+      background: var(--primary-color);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 12px;
     }
 
     .progress-bar {
@@ -328,9 +330,10 @@
       height: 8px;
       border-radius: 4px;
       position: relative;
-      cursor: pointer;
+      cursor: crosshair;
       margin-bottom: 15px;
       border: 1px solid var(--accent-color);
+      overflow: hidden;
     }
 
     .progress {
@@ -339,10 +342,10 @@
       top: 0;
       height: 100%;
       width: 0%;
-      background: var(--accent-color);
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
       border-radius: 4px;
       transition: width 0.1s ease;
-      box-shadow: 0 0 8px var(--accent-color);
+      box-shadow: 0 0 10px var(--primary-color);
     }
 
     .volume-controls {
@@ -360,16 +363,17 @@
       border-radius: 3px;
       outline: none;
       border: 1px solid var(--accent-color);
+      cursor: crosshair;
     }
 
     .volume-slider::-webkit-slider-thumb {
       -webkit-appearance: none;
       width: 14px;
       height: 14px;
-      background: var(--accent-color);
+      background: var(--primary-color);
       border-radius: 50%;
-      cursor: pointer;
-      box-shadow: 0 0 8px var(--accent-color);
+      cursor: crosshair;
+      box-shadow: 0 0 10px var(--primary-color);
     }
   </style>
 </head>
@@ -378,7 +382,7 @@
     <div class="mary"><span>m</span><span>a</span><span>r</span><span>y</span></div>
     <div class="mary mirror"></div>
   </div>
-  <div class=" card-container">
+  <div class="card-container">
     <div class="card">
       <div class="header">
         <div class="profile-pic"><img src="pfp.png" alt="Profile Picture"></div>
@@ -396,7 +400,7 @@
         <div class="song-title"><a href="https://open.spotify.com/user/bok0cvekss3x3ya1goxv12frt?si=a9ae8660c0ab4472&nd=1&dlsi=3a145ada9c194915" target="_blank">So This Is Love - Cinderella</a><span class="time-display">0:00 / 0:00</span></div>
         <div class="progress-bar"><div class="progress"></div></div>
         <div class="volume-controls"><span>>///<</span><input type="range" class="volume-slider" min="0" max="100" value="50"></div>
-        <div class="view-counter"><img src="eye.png" alt="Eye Icon"><span id="viewCount">0</span></div>
+        <div class="view-counter"><div class="eye-icon">👁</div><span id="viewCount">0</span></div>
       </div>
     </div>
   </div>
@@ -462,8 +466,8 @@
     // Pointer (trailing image) movement
     const pointer = document.querySelector('.pointer');
     document.addEventListener('mousemove', (e) => {
-      pointer.style.transform = `translate(${e.clientX - 8}px, ${e.clientY - 8}px)`;
-      pointer.style.opacity = '0.7';
+      pointer.style.transform = `translate(${e.clientX - 6}px, ${e.clientY - 6}px)`;
+      pointer.style.opacity = '0.8';
     });
 
     document.addEventListener('mouseout', () => {
@@ -570,13 +574,18 @@
       musicPlayer.currentTime = percentage * musicPlayer.duration;
     });
 
+    // Fixed card hover animation - much more subtle
     card.addEventListener('mousemove', (e) => {
       const rect = card.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
-      const angleX = (e.clientY - centerY) / 25;
-      const angleY = (e.clientX - centerX) / 25;
-      card.style.transform = `scale(1.05) rotateX(${-angleX}deg) rotateY(${angleY}deg)`;
+      
+      // Much smaller rotation values to prevent flipping
+      const angleX = (e.clientY - centerY) / 100; // Reduced from 25 to 100
+      const angleY = (e.clientX - centerX) / 100; // Reduced from 25 to 100
+      
+      // Subtle scale and rotation
+      card.style.transform = `scale(1.02) rotateX(${-angleX}deg) rotateY(${angleY}deg)`;
     });
 
     card.addEventListener('mouseleave', () => {
